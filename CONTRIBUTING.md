@@ -3,7 +3,7 @@
 - Clone the repository and install the dependencies:
 
 ```shell
-git clone https://github.com/FoundTechnology/paul-bot.git
+git clone https://github.com/FoundTechnology/found-poll-buddy.git
 ```
 
 - Run the docker-compose file to start and migrate the database:
@@ -12,19 +12,14 @@ git clone https://github.com/FoundTechnology/paul-bot.git
 docker-compose up -d
 ```
 
-- Add the following settings to your `.env` file to configure the bot.
+- Create a new branch and make your changes.
 
-```
-BOT_TOKEN=<Your bot token goes here.>
-DATABASE_URL=<Your database URL goes here.>
-ERR_CHANNEL=<Optional. The ID of a Discord channel where the bot will send errors to.>
-DBG_CHANNEL=<Optional. The ID of a Discord channel where the bot will send debug messages to.>
-MAX_DB_CONNECTIONS=<Optional. The maximum number of database connections to open. This depends on your database hosting plan.>
-```
-
-Run the bot:
+- Lint and test your changes:
 
 ```shell
-poetry shell  # This will start a shell with the development environment. You only need to do it once 
-paul
+ruff check . --show-files --output-format=github --show-source --fix
 ```
+
+- Commit your changes and open a pull request.
+
+Thanks for contributing!

@@ -23,8 +23,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    hostname: paul-bot
-    container_name: paul-bot
+    hostname: found-poll-buddy
+    container_name: found-poll-buddy
     restart: always
     depends_on:
       - postgres
