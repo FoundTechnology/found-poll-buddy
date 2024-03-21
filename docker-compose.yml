@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    command: |
+      -c config_file=/etc/postgresql/16/postgresql.conf
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASS}
+      POSTGRES_DB: ${PG_DB}
+      TZ: "UTC"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./.docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./.docker/postgresql.conf:/etc/postgresql/16/postgresql.conf
+
+  found-poll-buddy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: paul-bot
+    container_name: paul-bot
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      BOT_TOKEN: ${BOT_TOKEN}
+      DATABASE_URL: postgres://${PG_USER}:${PG_PASS}@postgres:5432/${PG_DB}
+      MAX_DB_CONNECTIONS: 10
+
+volumes:
+  postgres:

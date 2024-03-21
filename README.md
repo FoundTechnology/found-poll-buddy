@@ -1,10 +1,14 @@
-# Paul - The bestest polling bot ever
+# Found. Poll Buddy
 
-Hi! I'm Paul; a teeny tiny bot who's good at one thing. Making polls. And when I say good, I mean really really good. Like the bestest best bot ever at making polls. I can make open polls, I can make closed polls, I can make dynamically editable polls, and I can make them any size. And all that with a simple, good-looking, and easy to use interface! So come on and try me out in your server!
+The discord bot that makes polls easy and fun in the Found. Community server.
+This project is forked from [Paul Bot](https://github.com/abrahammurciano/paul-bot). Special thanks to [Abraham Murciano](https://github.com/abrahammurciano) @abrahammurciano for creating this amazing project. 
 
 ## Table of Contents
-- [Links](#links)
+
 - [Features](#features)
+- [Setup](#setup)
+	- [Bot Creation](#bot-creation)
+	- [Start](#start-the-bot)
 - [Usage](#usage)
 	- [question](#question)
 	- [options](#options)
@@ -14,33 +18,41 @@ Hi! I'm Paul; a teeny tiny bot who's good at one thing. Making polls. And when I
 	- [allowed_editors](#allowed_editors)
 	- [allowed_voters](#allowed_voters)
 	- [Closing the poll](#closing-the-poll)
-- [Self Hosting](#self-hosting)
+- [Deploy](#deploy)
 
-## Links
-
-### [Invite Me](https://discord.com/api/oauth2/authorize?client_id=902944827598049321&permissions=2147551296&scope=bot%20applications.commands)
-
-### [top.gg](https://top.gg/bot/902944827598049321)
-
-### [GitHub](https://github.com/abrahammurciano/paul-bot)
-
-### [Discord Server](https://discord.com/invite/mzhSRnnY78)
 
 ## Features
+  - Uses a slash command to create the poll.
+  - Uses buttons to vote and interact with existing polls.
+  - Polls are persistent (That means if the bot goes offline it will remember its old polls when it  comes 	back online)
+  - Highly customizable permissions for each action (voting, editing, viewing).
+  - Set expiry dates on polls.
+  - Option to allow multiple votes per person.
+  - Option to allow certain people (or everyone) to view the votes.
+  - Option to allow people to add options to the poll.
+  - Option to restrict votes to certain roles and/or users.
+  - Beautiful interface.
+  - Button for the poll creator to close the poll at will.
 
-Paul has many features. In fact I believe it has the most features out of any other poll bot I could find. After all, that's why I made him; because I couldn't find a feature rich poll bot with an easy and well designed interface.
+## Setup
 
--   Uses a slash command to create the poll.
--   Uses buttons to vote and interact with existing polls.
--   Polls are persistent (That means if the bot goes offline it will remember its old polls when it comes back online)
--   Highly customizable permissions for each action (voting, editing, viewing).
--   Set expiry dates on polls.
--   Option to allow multiple votes per person.
--   Option to allow certain people (or everyone) to view the votes.
--   Option to allow people to add options to the poll.
--   Option to restrict votes to certain roles and/or users.
--   Beautiful interface.
--   Button for the poll creator to close the poll at will.
+### Bot Creation
+
+Go to Discord's [Developer Portal](https://discord.com/developers/applications) and create a new application. Copy the bot token and keep it safe.
+
+### Start the Bot
+
+```shell
+git clone https://github.com/FoundTechnology/found-poll-buddy.git
+docker build -f Dockerfile -t found-poll-buddy:latest .
+cp example.env .env
+# Fill in the .env file with the required values
+docker compose up -d
+```
+
+### Invite the Bot
+
+Replace the `<your-client-id>` and go to `https://discord.com/api/oauth2/authorize?client_id=<your-client-id>&permissions=2147551296&scope=bot%20applications.commands`
 
 ## Usage
 
@@ -131,66 +143,3 @@ Use this parameter to restrict who may vote to a set of users and roles. By defa
 ### Closing the poll
 
 You can use the big red button to close the poll manually without waiting for it to expire. Once you do this, there's no turning back. Only the poll creator can do this.
-
-## Self Hosting
-
-This bot is hosted on [fly.io](https://fly.io) so these instructions are tailored to that platform. However, you can host it on any other platform, you'll just need to figure out how to do it yourself.
-
-### Create a bot
-
-1. Go to the [Discord Developer Portal](https://discord.com/developers/applications) and create a new application.
-2. Go to the "Bot" tab and click "Add Bot".
-3. Copy the token and save it for later.
-
-### Create a fly.io app
-
-1. Install the fly.io CLI by following the instructions [here](https://fly.io/docs/getting-started/installing-flyctl/).
-2. Use `flyctl auth login` or `flyctl auth signup` to (create and) log in to your fly.io account.
-3. Run `flyctl create` and follow the instructions to create a new app.
-
-### Create a PostgreSQL database
-
-You can use any PostgreSQL hosting service you like. Here are instructions for hosting one on fly.io.
-
-Run the following commands to create a new PostgreSQL app and attach it to your main app. When you attach it, a new user and database will be created for the main app.
-
-```sh
-flyctl postgres create --name <app-name>-db
-flyctl postgres attach <app-name>-db
-```
-
-The output of the attach command will contain the connection string which has the username, password, host, etc. It will look something like this:
-
-```
-postgres://<app-name>:<password>@<app-name>-db.flycast:5432/<app-name>
-```
-
-It will be added as a secret (named `DATABASE_URL`) in the main app. Also, make a note of it as we'll need to create the initial schema on the database.
-
-### Initialize the database
-
-You need to run the `paul_bot/data/schema.psql` file on the database to create the necessary schema.
-
-First run the following command to make localhost:5432 act as a proxy to the fly.io database. It will block until you cancel with `Ctrl+C`, so run it in a different shell.
-
-```sh
-flyctl proxy 5432 -a <app-name>-db
-```
-
-Then run this command to import the schema:
-
-```sh
-psql postgres://<app-name>:<password>@localhost:5432/<app-name> -f paul_bot/data/schema.psql
-```
-
-### Set fly.io secrets
-
-Use the following command to set the secrets for the bot.
-
-```sh
-flyctl secrets set BOT_TOKEN=<your-bot-token> DBG_CHANNEL=<channel-id> ERR_CHANNEL=<channel-id>
-```
-
-- `BOT_TOKEN` is the token you copied from the Discord Developer Portal.
-- `DBG_CHANNEL` (optional) is the channel ID where you want to receive debug messages.
-- `ERR_CHANNEL` (optional) is the channel ID where you want to receive error messages.

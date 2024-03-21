@@ -1,29 +1,86 @@
-[tool.poetry]
-name = "paul-bot"
-version = "0.1.1"
-description = ""
-authors = ["Abraham Murciano <abrahammurciano@gmail.com>"]
-
-[tool.poetry.dependencies]
-python = "^3.10"
-disnake = "^2.4"
-asyncpg = "^0.27"
-dateparser = "^1.1"
-discord-lumberjack = "^1.0"
-python-dotenv = "^0.19"
-pytz = "^2022.1"
-
-[tool.poetry.dev-dependencies]
-types-pytz = "^2021.3"
-types-dateparser = "^1.1.2"
-black = "^22.3.0"
-
-[tool.poetry.scripts]
-paul = "paul_bot.main:_main"
-
-[tool.poetry.group.dev.dependencies]
-mypy = "^1.5.1"
+[project]
+name = "found-poll-buddy"
+version = "1.0.0"
+description = "Found. Poll Buddy is discord bot that allows you to create polls and vote on them."
+authors = [
+    { name = "The Found. Technology Authors", email = "foundtechnology@found-rg.com" },
+    { name = "Abraham Murciano", email = "abrahammurciano@gmail.com"},
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "disnake==2.9",
+    "asyncpg==0.29",
+    "dateparser==1.2",
+    "python-dotenv==1.0.1",
+    "pytz==2024.1",
+    "python-json-logger==2.0.7",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 101
+preview = true
+ignore = ["UP007"]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "**/stanza-cache",
+    "**/models-cache",
+    "scripts/",
+]
+
+[tool.ruff.lint]
+exclude = ["*.ipynb"]
+
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+exclude = ["*.ipynb"]
